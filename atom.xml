@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://pollucite.github.io/atom.xml" rel="self"/>
   <link href="http://pollucite.github.io/"/>
-  <updated>2014-03-13T14:37:10+00:00</updated>
+  <updated>2014-03-13T14:47:56+00:00</updated>
   <id>http://pollucite.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -16,9 +16,22 @@
   <entry>
     <title type="html"><![CDATA[My First]]></title>
     <link href="http://pollucite.github.io/blog/2014/03/13/my-first/"/>
-    <updated>2014-03-13T09:08:34+00:00</updated>
+    <updated>2014-03-13T00:00:00+00:00</updated>
     <id>http://pollucite.github.io/blog/2014/03/13/my-first</id>
-    <content type="html"><![CDATA[<p><strong>Woooooooo!!</strong></p>
+    <content type="html"><![CDATA[<p>&mdash;
+layout: post
+title: &ldquo;My First&rdquo;
+date: 2014-03-13 09:08:34 +0000
+comments: true
+categories:
+&ndash; cat1
+&ndash; dodo2
+&ndash; momo3
+&ndash; graygray4</p>
+
+<h2>&ndash; orgorg5</h2>
+
+<p><strong>Woooooooo!!</strong></p>
 
 <p><em>!!</em>
 123</p>
@@ -44,6 +57,8 @@
 </span><span class='line'>puts "hello world" 
 </span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
 
+
+<p>for save jeffxx!!</p>
 ]]></content>
   </entry>
   
