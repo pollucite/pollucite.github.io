@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
+<<<<<<< HEAD
   <title><![CDATA[On My Way.]]></title>
   <link href="http://pollucite.github.io/atom.xml" rel="self"/>
   <link href="http://pollucite.github.io/"/>
@@ -8,12 +9,22 @@
   <id>http://pollucite.github.io/</id>
   <author>
     <name><![CDATA[pollucite]]></name>
+=======
+  <title><![CDATA[My Octopress Blog]]></title>
+  <link href="http://pollucite.github.io/atom.xml" rel="self"/>
+  <link href="http://pollucite.github.io/"/>
+  <updated>2014-03-13T15:07:17+00:00</updated>
+  <id>http://pollucite.github.io/</id>
+  <author>
+    <name><![CDATA[Your Name]]></name>
+>>>>>>> 8be6b3d4ed837dbcf9687f629ff9ef7b28dbf515
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
   
   <entry>
+<<<<<<< HEAD
     <title type="html"><![CDATA[Q Replication - 一些 PD 技巧]]></title>
     <link href="http://pollucite.github.io/blog/2014/03/17/problem-detecting-on-q-replication/"/>
     <updated>2014-03-17T21:41:54+08:00</updated>
@@ -218,6 +229,28 @@ F: Fail
 <li><a href="http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.swg.im.iis.repl.qrepl.doc/topics/iiyrqsubcchgovew.html">Information Center: Changing the properties of unidirectional Q subscriptions</a></li>
 </ol>
 
+=======
+    <title type="html"><![CDATA[My First]]></title>
+    <link href="http://pollucite.github.io/blog/2014/03/13/my-first/"/>
+    <updated>2014-03-13T09:08:34+00:00</updated>
+    <id>http://pollucite.github.io/blog/2014/03/13/my-first</id>
+    <content type="html"><![CDATA[<p><strong>Woooooooo!!</strong></p>
+
+<p><em>!!</em>
+123</p>
+
+<p><code>Maw</code></p>
+
+<ul>
+<li>I am a cat!!</li>
+<li>I am two <a href="http://octopress.org/">cat!!</a></li>
+</ul>
+
+
+<h2>TEST IS GOOD</h2>
+
+<h3>OHOHOH</h3>
+>>>>>>> 8be6b3d4ed837dbcf9687f629ff9ef7b28dbf515
 ]]></content>
   </entry>
   
