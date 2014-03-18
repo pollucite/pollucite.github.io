@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[On My Way.]]></title>
+  <link href="http://pollucite.github.io/atom.xml" rel="self"/>
+  <link href="http://pollucite.github.io/"/>
+  <updated>2014-03-18T22:46:47+08:00</updated>
+  <id>http://pollucite.github.io/</id>
+  <author>
+    <name><![CDATA[pollucite]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Q Replication - 一些 PD 技巧]]></title>
+    <link href="http://pollucite.github.io/blog/2014/03/17/problem-detecting-on-q-replication/"/>
+    <updated>2014-03-17T21:41:54+08:00</updated>
+    <id>http://pollucite.github.io/blog/2014/03/17/problem-detecting-on-q-replication</id>
+    <content type="html"><![CDATA[<p>最近不知為何 Q Replication 一直發爐，發發發發你媽的爐啊啊啊啊啊。</p>
+
+<p>紀錄 &amp; 整理一些釐清 / 解決問題的小技巧。</p>
+
+<!-- more -->
+
+
+<h2>Find the Problem</h2>
+
+<h3>log</h3>
+
+<p>大部分時候 Replication 的問題會記在他的 log 裡面 (沒有記在裡面的分開討論)，
+所以有狀況的時候通常可以在 log 中找出到底發生了什麼事情。</p>
+
+<p>如果 log 顯示 Replication 正常，但是資料卻遲遲一直沒有往下抄，可能發生</p>
+
+<ol>
+<li>下游資料庫 performance 很差 / 有 deadlock</li>
+<li>Replication 做得很慢</li>
+</ol>
+
+
+<p>通常下游效能很差時會所有的 Queue 一起停擺，如果只有一個 / 數個 table 做得很慢則可以合理懷疑是 deadlock 或者在 replication 端卡住。</p>
+
+<h3>Q Depth</h3>
+
+<p>Q Depth 指的是在 Queue 中等待被抄寫的 msg 深度。</p>
+
+<p>如果 Q Depth 一直成長而沒有消掉，則表示該 Queue 的第一個 msg 做得非常慢。</p>
+
+<h3>asnqmfmt</h3>
+
+<p><code>asnqmfmt</code> 可以把 Queue 裡面的 msg dump 出來看。</p>
+
+<p>我通常用的是:</p>
+
+<pre><code>asnqmfmt *queue_name* *queue_manager_name*  -mqmd -l 1
+</code></pre>
+
+<p>意為 dump Queue 中的第一筆資料，看這個 queue 到底卡在哪一筆做得很慢。</p>
+
+<h2>Solve the Problem</h2>
+
+<h3>spill</h3>
+
+<p>spill 是把有問題的 Table 從 queue 中挑出來讓他單獨往下做，
+不要讓這個壞掉的 subs 影響到其他正常的抄寫。</p>
+
+<pre><code>asnqacmd apply_server=*apply_server* apply_schema=*schema*
+spillsub=*queue_name*:*sub_name*
+</code></pre>
+
+<p>spill 成功之後 IBMQREP_SUBS 中該 subname 的 STATE 會變成 S ，表示該 subname 進入 spill mode。</p>
+
+<p>如果沒有變成 S 則表示 spill 失敗。</p>
+
+<p>spill 出來檢查問題，之後把 table 從 spill 狀態復原的指令</p>
+
+<pre><code>asnqacmd apply_server=*apply_server* apply_schema=*schema*
+resumesub=*queue_name*:*sub_name*
+</code></pre>
+
+<p>spill 指令在 Receive Queue Inactive(check IBMQREP_RECVQUEUES <code>STATE</code> column) ，
+或者 replication 正在處理該 table 的時候是無效的。</p>
+
+<pre><code>SELECT STATE FROM SCHEMA.IBMQREP_RECVQUEUES WHERE SUBNAME='subname'
+</code></pre>
+
+<p>若是 Receive Queue Inactive 時想要 spill，那&hellip; 就快速啟動該 Queue ，
+在還沒有 Inactive 之前丟 spill 指令即可。</p>
+
+<h3>強制停止</h3>
+
+<p>如果在 replication 正在處理該 table 的時候要強制停止對該 table 的 Apply 的話，
+直接把 IBMQREP_SUBS 與 IBMQREP_TARGETS 中的 <code>STATE</code> 改成 &lsquo;I&#8217;，
+接著重新啟動 Q Apply 即可。</p>
+
+<pre><code># connect to Capture server
+UPDATE SCHEMA.IBMQREP_SUBS SET STATE='I' WHERE ...
+
+# connect to Apply server
+UPDATE SCHEMA.IBMQREP_TARGETS SET STATE='I' WHERE ...
+
+# stop Apply
+asnqacmd apply_server=*apply_server* apply_schema=*schema* stop
+# start Apply
+asnqacmd apply_server=*apply_server* apply_schema=*schema* 
+startq=*queue_name*
+</code></pre>
+
+<h2>Reference</h2>
+
+<ol>
+<li><a href="http://pic.dhe.ibm.com/infocenter/db2luw/v9r7/topic/com.ibm.swg.im.iis.repl.qrepl.doc/topics/iiyrqfmtrasnqmfm.html?resultof=%22%61%73%6e%71%6d%66%6d%74%22%20">Information Center: asnqmfmt</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Q Replication Column Mapping]]></title>
+    <link href="http://pollucite.github.io/blog/2014/03/13/q-replication-col-mappping/"/>
+    <updated>2014-03-13T17:08:34+08:00</updated>
+    <id>http://pollucite.github.io/blog/2014/03/13/q-replication-col-mappping</id>
+    <content type="html"><![CDATA[<p>寫起來當個紀錄。</p>
+
+<p>這兩天工作的時候碰到 Q replication 從上游流到下游的時候有 column 對應錯誤。</p>
+
+<pre><code>Capture  Apply
+   A ---&gt; A
+   B ---&gt; C
+   C ---&gt; B
+   D ---&gt; D
+</code></pre>
+
+<p>大概就是這樣一個情形。
+檢查 Apply 端的 <code>IBMQREP_TRG_COLS</code> 看到 <code>SOURCE_COLNAME</code> 與 <code>TARGET_COLNAME</code> 的對應相當正常。</p>
+
+<p>後來才發現 Q replication 是以 <code>SRC_COL_MAP</code> 這個欄位來決定上下游 column 的 mapping。</p>
+
+<!-- more -->
+
+
+<h2>IBMQREP_TRG_COLS 中幾個欄位的定義</h2>
+
+<p>看了下 Information Center, <code>SOURCE_COLNAME</code> 可能有以下三類情形:</p>
+
+<pre><code>1. 被訂閱的 source column 名稱
+2. 用來初始化 target column 值的 SQL expression (即 replication 自行加入的值)
+3. An auditing column in a consistent-change-data (CCD) tables
+</code></pre>
+
+<p>第三點就不是很懂在做什麼了。</p>
+
+<p>由於 replication 不只會抄寫到 table, 也可能會把值丟給 stored procedure，所以 <code>TARGET_COLNAME</code> 同時會包含下游的名稱與參數。</p>
+
+<p><code>SRC_COL_MAP</code> 是這麼被描述的:</p>
+
+<p>The column position, data type, length, and code page for all of the columns that are used in an SQL expression.</p>
+
+<p>實際內容長得像這樣:</p>
+
+<pre><code>448,64,850,0,1;448,64,850,0,1;
+</code></pre>
+
+<h2>如何改變 column 的對應?</h2>
+
+<p>清掉 IBMQREP_TRG_COLS 裡面錯誤 mapping 的 <code>SRC_COL_MAP</code> ，然後 REINIT。</p>
+
+<p>這個動作不用重新啟動 replication。</p>
+
+<h3>Clear Wrong Config</h3>
+
+<p>雖然說應該只要清掉 <code>SRC_COL_MAP</code> 即可，不過之前處理的時候為了保險起見就全部清掉了</p>
+
+<pre><code>UPDATE schema.IBMQREP_TRG_COLS SET
+    MSG_COL_CODEPAGE=null,
+    MSG_COL_NUMBER=null,
+    MSG_COL_TYPE=null,
+    MSG_COL_LENGTH=null,
+    SRC_COL_MAP=null,
+    BEF_TARG_COL_NAME=null
+WHERE ...
+</code></pre>
+
+<h3>Reinitial Sub</h3>
+
+<p>REINIT_SUB 這個 signal 會讓 replication 重讀 IBMQREP_SUBS &amp; IBMQREP_SRC_COLS &amp; IBMQREP_SENDQUEUES ，吃最新的設定值。</p>
+
+<pre><code>insert into schema.IBMQREP_SIGNAL(
+     SIGNAL_TIME,
+     SIGNAL_TYPE,
+     SIGNAL_SUBTYPE,
+     SIGNAL_INPUT_IN,
+     SIGNAL_STATE
+ ) values (
+      CURRENT TIMESTAMP,
+     'CMD',
+     'REINIT_SUB',
+     'subname',
+     'P' );
+</code></pre>
+
+<p><code>SIGNAL_STATE</code> 會有幾個狀態</p>
+
+<pre><code>P: Default 值，pending，表示 Q Capture 尚未收到這個 signal
+R: Receive
+C: Completed process
+F: Fail
+</code></pre>
+
+<p>REINIT 後過一會子，檢查 <code>IBMQREP_TRG_COLS</code> 設定有吃進去之後應該就好了。</p>
+
+<h2>Reference</h2>
+
+<ol>
+<li><a href="https://publib.boulder.ibm.com/infocenter/db2luw/v9/topic/com.ibm.websphere.ii.replication.qrepl.doc/reference/iiyrqctbrapplist.html">Information Center: Control tables at the Q Apply server</a></li>
+<li><a href="http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.swg.im.iis.repl.qrepl.doc/topics/iiyrqsubcchgovew.html">Information Center: Changing the properties of unidirectional Q subscriptions</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

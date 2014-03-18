@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>On My Way.</title>
+  <title>Category: Q Replication - On My Way.</title>
   <meta name="author" content="pollucite">
 
   
-  <meta name="description" content="最近不知為何 Q Replication 一直發爐，發發發發你媽的爐啊啊啊啊啊。 紀錄 &amp; 整理一些釐清 / 解決問題的小技巧。 ">
+  <meta name="description" content="Category: Q replication">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pollucite.github.io">
+  <link rel="canonical" href="http://pollucite.github.ioblog/categories/q-replication">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="On My Way." type="application/atom+xml">
@@ -63,119 +63,54 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article role="article">
   
-  
-  
-    <article>
-      
   <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/17/problem-detecting-on-q-replication/">Q Replication - 一些 PD 技巧</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-17T21:41:54+08:00" pubdate data-updated="true">Mar 17<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/03/17/problem-detecting-on-q-replication/#disqus_thread"
-             data-disqus-identifier="http://pollucite.github.io/blog/2014/03/17/problem-detecting-on-q-replication/">Comments</a>
-        
-      </p>
+    <h1 class="entry-title">Category: Q Replication</h1>
     
   </header>
+  
+  <div id="blog-archives" class="category">
 
 
-  <div class="entry-content"><p>最近不知為何 Q Replication 一直發爐，發發發發你媽的爐啊啊啊啊啊。</p>
 
-<p>紀錄 &amp; 整理一些釐清 / 解決問題的小技巧。</p>
+  
+  <h2>2014</h2>
+
+<article>
+  
+<h1><a href="/blog/2014/03/17/problem-detecting-on-q-replication/">Q Replication - 一些 PD 技巧</a></h1>
+<time datetime="2014-03-17T21:41:54+08:00" pubdate><span class='month'>Mar</span> <span class='day'>17</span> <span class='year'>2014</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/q-replication/'>Q replication</a></span>
+</footer>
+
+
+</article>
+
+
+
+<article>
+  
+<h1><a href="/blog/2014/03/13/q-replication-col-mappping/">Q Replication Column Mapping</a></h1>
+<time datetime="2014-03-13T17:08:34+08:00" pubdate><span class='month'>Mar</span> <span class='day'>13</span> <span class='year'>2014</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/q-replication/'>Q replication</a></span>
+</footer>
+
+
+</article>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/03/17/problem-detecting-on-q-replication/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/13/q-replication-col-mappping/">Q Replication Column Mapping</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
 
   
-
-
-<time datetime="2014-03-13T17:08:34+08:00" pubdate data-updated="true">Mar 13<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/03/13/q-replication-col-mappping/#disqus_thread"
-             data-disqus-identifier="http://pollucite.github.io/blog/2014/03/13/q-replication-col-mappping/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>寫起來當個紀錄。</p>
-
-<p>這兩天工作的時候碰到 Q replication 從上游流到下游的時候有 column 對應錯誤。</p>
-
-<pre><code>Capture  Apply
-   A ---&gt; A
-   B ---&gt; C
-   C ---&gt; B
-   D ---&gt; D
-</code></pre>
-
-<p>大概就是這樣一個情形。
-檢查 Apply 端的 <code>IBMQREP_TRG_COLS</code> 看到 <code>SOURCE_COLNAME</code> 與 <code>TARGET_COLNAME</code> 的對應相當正常。</p>
-
-<p>後來才發現 Q replication 是以 <code>SRC_COL_MAP</code> 這個欄位來決定上下游 column 的 mapping。</p>
+</article>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/03/13/q-replication-col-mappping/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -211,6 +146,7 @@
 
   
 </aside>
+
 
     </div>
   </div>
