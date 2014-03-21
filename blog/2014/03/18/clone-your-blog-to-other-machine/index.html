@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Categories - On My Way.</title>
+  <title>遍地開花之 Octopress 搬家記 - On My Way.</title>
   <meta name="author" content="pollucite">
 
   
-  <meta name="description" content="Categories Mar 13th, 2014 Q replication [ 2 ] Git [ 1 ] Mar 13th, 2014 Tweet Comments Please enable JavaScript to view the comments powered by &hellip;">
+  <meta name="description" content="小爺我之前把 octopress 架在 koding.com 上，但是他的 terminal 不支援中文輸入，我又很不喜歡他的文件編輯畫面，想設 ssh 卻怎麼也都搞不定 (&hellip;) 後來想想樓友的 octopress 都在家裡那台工作站上編寫，我幹嘛這麼鐵齒一定要在 kd.io &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pollucite.github.io/blog/categories">
+  <link rel="canonical" href="http://pollucite.github.io/blog/2014/03/18/clone-your-blog-to-other-machine">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="On My Way." type="application/atom+xml">
@@ -64,45 +64,15 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Categories</h1>
-    <p class="meta">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-13T09:54:00+08:00" pubdate data-updated="true">Mar 13<span>th</span>, 2014</time></p>
-  </header>
-  
-  <ul>
-
-
-
-    <li><a href="/blog/categories/Q replication/">Q replication</a> [ 2 ]</li>
-
-
-
-    <li><a href="/blog/categories/git/">Git</a> [ 1 ]</li>
-
-
-
-</ul>
-
-
-  
-    <footer>
+    
+      <h1 class="entry-title">遍地開花之 Octopress 搬家記</h1>
+    
+    
       <p class="meta">
         
-        
 
 
 
@@ -114,21 +84,124 @@
   
 
 
-<time datetime="2014-03-13T09:54:00+08:00" pubdate data-updated="true">Mar 13<span>th</span>, 2014</time>
+<time datetime="2014-03-18T23:00:07+08:00" pubdate data-updated="true">Mar 18<span>th</span>, 2014</time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://pollucite.github.io">Comments</a>
         
       </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>小爺我之前把 octopress 架在 koding.com 上，但是他的 terminal 不支援中文輸入，我又很不喜歡他的文件編輯畫面，想設 ssh 卻怎麼也都搞不定 (&hellip;)</p>
+
+<p>後來想想樓友的 octopress 都在家裡那台工作站上編寫，我幹嘛這麼鐵齒一定要在 kd.io 上用呢我～★</p>
+
+<p>紀錄 git 初學者 (A.K.A, ME) 搬遷 octopress 到另一個工作站上的過程。</p>
+
+<!-- more -->
+
+
+<h2>Setup Environment</h2>
+
+<p>首先把 source 和 _deploy 上去的 Blog 抓下來</p>
+
+<pre><code>git clone -b source https://github.com/pollucite/pollucite.github.io octopress
+cd octopress
+git clone https://github.com/pollucite/pollucite.github.io _deploy
+</code></pre>
+
+<p>接下來 setup_github_pages (假設 ruby 相關環境都已經 setup 好了)</p>
+
+<p>setup_github_pages 會切到 _deploy 資料夾並且在 local 建立一個 master branch
+，並且 setup remote repositroy</p>
+
+<pre><code>rake setup_github_pages
+</code></pre>
+
+<h2>Deploy</h2>
+
+<p>寫完 Blog 就可以準備把它 deploy 到 github 上了。</p>
+
+<pre><code>rake generate
+rake deploy
+</code></pre>
+
+<p>這時候可能會碰到 conflict ，手動修正 merge 再推回去即可。</p>
+
+<pre><code>cd _deploy
+git pull origin master
+# fix conflict ...
+git commit -m 'merge deploy'
+</code></pre>
+
+<p>這個時候 local 的圖會看起來像這樣:</p>
+
+<p><img src="/images/git_octopress.png" alt="local git history picture of migrate octopress blog to new host" /></p>
+
+<p>推到 remote repositroy:</p>
+
+<pre><code>git push origin master
+</code></pre>
+
+<p>推上去以後的圖:</p>
+
+<p><img src="/images/git_octopress_2.png" alt="remote git history picture of migrate octopress blog to new host" /></p>
+
+<h2>Reference</h2>
+
+<p><a href="http://blog.zerosharp.com/clone-your-octopress-to-blog-from-two-places/">Clone Your Octopress to Blog from Two Place</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
       
-        <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://pollucite.github.io/blog/categories/index.html" data-via="" data-counturl="http://pollucite.github.io/blog/categories/index.html" >Tweet</a>
+
+<span class="byline author vcard">Posted by <span class="fn">pollucite</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-18T23:00:07+08:00" pubdate data-updated="true">Mar 18<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>git</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://pollucite.github.io/blog/2014/03/18/clone-your-blog-to-other-machine/" data-via="" data-counturl="http://pollucite.github.io/blog/2014/03/18/clone-your-blog-to-other-machine/" >Tweet</a>
   
   
   
 </div>
 
+    
+    <p class="meta">
       
-    </footer>
-  
+        <a class="basic-alignment left" href="/blog/2014/03/17/problem-detecting-on-q-replication/" title="Previous Post: Q Replication - 一些 PD 技巧">&laquo; Q Replication - 一些 PD 技巧</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
   <section>
@@ -196,8 +269,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://pollucite.github.io/blog/categories/index.html';
-        var disqus_url = 'http://pollucite.github.io/blog/categories/index.html';
+        var disqus_identifier = 'http://pollucite.github.io/blog/2014/03/18/clone-your-blog-to-other-machine/';
+        var disqus_url = 'http://pollucite.github.io/blog/2014/03/18/clone-your-blog-to-other-machine/';
         var disqus_script = 'embed.js';
       
     (function () {

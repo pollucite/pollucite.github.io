@@ -1,30 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-<<<<<<< HEAD
   <title><![CDATA[On My Way.]]></title>
   <link href="http://pollucite.github.io/atom.xml" rel="self"/>
   <link href="http://pollucite.github.io/"/>
-  <updated>2014-03-18T22:46:47+08:00</updated>
+  <updated>2014-03-22T00:17:53+08:00</updated>
   <id>http://pollucite.github.io/</id>
   <author>
     <name><![CDATA[pollucite]]></name>
-=======
-  <title><![CDATA[My Octopress Blog]]></title>
-  <link href="http://pollucite.github.io/atom.xml" rel="self"/>
-  <link href="http://pollucite.github.io/"/>
-  <updated>2014-03-13T15:07:17+00:00</updated>
-  <id>http://pollucite.github.io/</id>
-  <author>
-    <name><![CDATA[Your Name]]></name>
->>>>>>> 8be6b3d4ed837dbcf9687f629ff9ef7b28dbf515
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
   
   <entry>
-<<<<<<< HEAD
+    <title type="html"><![CDATA[遍地開花之 Octopress 搬家記]]></title>
+    <link href="http://pollucite.github.io/blog/2014/03/18/clone-your-blog-to-other-machine/"/>
+    <updated>2014-03-18T23:00:07+08:00</updated>
+    <id>http://pollucite.github.io/blog/2014/03/18/clone-your-blog-to-other-machine</id>
+    <content type="html"><![CDATA[<p>小爺我之前把 octopress 架在 koding.com 上，但是他的 terminal 不支援中文輸入，我又很不喜歡他的文件編輯畫面，想設 ssh 卻怎麼也都搞不定 (&hellip;)</p>
+
+<p>後來想想樓友的 octopress 都在家裡那台工作站上編寫，我幹嘛這麼鐵齒一定要在 kd.io 上用呢我～★</p>
+
+<p>紀錄 git 初學者 (A.K.A, ME) 搬遷 octopress 到另一個工作站上的過程。</p>
+
+<!-- more -->
+
+
+<h2>Setup Environment</h2>
+
+<p>首先把 source 和 _deploy 上去的 Blog 抓下來</p>
+
+<pre><code>git clone -b source https://github.com/pollucite/pollucite.github.io octopress
+cd octopress
+git clone https://github.com/pollucite/pollucite.github.io _deploy
+</code></pre>
+
+<p>接下來 setup_github_pages (假設 ruby 相關環境都已經 setup 好了)</p>
+
+<p>setup_github_pages 會切到 _deploy 資料夾並且在 local 建立一個 master branch
+，並且 setup remote repositroy</p>
+
+<pre><code>rake setup_github_pages
+</code></pre>
+
+<h2>Deploy</h2>
+
+<p>寫完 Blog 就可以準備把它 deploy 到 github 上了。</p>
+
+<pre><code>rake generate
+rake deploy
+</code></pre>
+
+<p>這時候可能會碰到 conflict ，手動修正 merge 再推回去即可。</p>
+
+<pre><code>cd _deploy
+git pull origin master
+# fix conflict ...
+git commit -m 'merge deploy'
+</code></pre>
+
+<p>這個時候 local 的圖會看起來像這樣:</p>
+
+<p><img src="http://pollucite.github.io/images/git_octopress.png" alt="local git history picture of migrate octopress blog to new host" /></p>
+
+<p>推到 remote repositroy:</p>
+
+<pre><code>git push origin master
+</code></pre>
+
+<p>推上去以後的圖:</p>
+
+<p><img src="http://pollucite.github.io/images/git_octopress_2.png" alt="remote git history picture of migrate octopress blog to new host" /></p>
+
+<h2>Reference</h2>
+
+<p><a href="http://blog.zerosharp.com/clone-your-octopress-to-blog-from-two-places/">Clone Your Octopress to Blog from Two Place</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Q Replication - 一些 PD 技巧]]></title>
     <link href="http://pollucite.github.io/blog/2014/03/17/problem-detecting-on-q-replication/"/>
     <updated>2014-03-17T21:41:54+08:00</updated>
@@ -229,28 +284,6 @@ F: Fail
 <li><a href="http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.swg.im.iis.repl.qrepl.doc/topics/iiyrqsubcchgovew.html">Information Center: Changing the properties of unidirectional Q subscriptions</a></li>
 </ol>
 
-=======
-    <title type="html"><![CDATA[My First]]></title>
-    <link href="http://pollucite.github.io/blog/2014/03/13/my-first/"/>
-    <updated>2014-03-13T09:08:34+00:00</updated>
-    <id>http://pollucite.github.io/blog/2014/03/13/my-first</id>
-    <content type="html"><![CDATA[<p><strong>Woooooooo!!</strong></p>
-
-<p><em>!!</em>
-123</p>
-
-<p><code>Maw</code></p>
-
-<ul>
-<li>I am a cat!!</li>
-<li>I am two <a href="http://octopress.org/">cat!!</a></li>
-</ul>
-
-
-<h2>TEST IS GOOD</h2>
-
-<h3>OHOHOH</h3>
->>>>>>> 8be6b3d4ed837dbcf9687f629ff9ef7b28dbf515
 ]]></content>
   </entry>
   
