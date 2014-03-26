@@ -2,27 +2,35 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://pollucite.github.io/blog/2014/03/13/q-replication-col-mappping/</loc>
-        <lastmod>2014-03-18T22:45:28+08:00</lastmod>
+        <lastmod>2014-03-22T00:35:14+08:00</lastmod>
     </url>
     <url>
         <loc>http://pollucite.github.io/blog/2014/03/17/problem-detecting-on-q-replication/</loc>
-        <lastmod>2014-03-18T22:45:28+08:00</lastmod>
+        <lastmod>2014-03-22T00:35:14+08:00</lastmod>
     </url>
     <url>
         <loc>http://pollucite.github.io/blog/2014/03/18/clone-your-blog-to-other-machine/</loc>
-        <lastmod>2014-03-22T00:17:43+08:00</lastmod>
+        <lastmod>2014-03-22T00:35:14+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://pollucite.github.io/blog/2014/03/23/blackdoor-web-10-and-30/</loc>
+        <lastmod>2014-03-26T00:32:32+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://pollucite.github.io/blog/2014/03/25/blackdoor-web-50/</loc>
+        <lastmod>2014-03-26T00:48:51+08:00</lastmod>
     </url>
     <url>
         <loc>http://pollucite.github.io/blog/archives/</loc>
-        <lastmod>2014-03-22T00:17:43+08:00</lastmod>
+        <lastmod>2014-03-26T00:48:51+08:00</lastmod>
     </url>
     <url>
         <loc>http://pollucite.github.io/blog/categories/</loc>
-        <lastmod>2014-03-18T22:45:29+08:00</lastmod>
+        <lastmod>2014-03-22T00:35:14+08:00</lastmod>
     </url>
     <url>
         <loc>http://pollucite.github.io/</loc>
-        <lastmod>2014-03-22T00:17:43+08:00</lastmod>
+        <lastmod>2014-03-26T00:48:51+08:00</lastmod>
     </url>
     <url>
         <loc>http://pollucite.github.io/robots.txt</loc>

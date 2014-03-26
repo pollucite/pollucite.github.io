@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Backdoor 2014 | On My Way.]]></title>
+  <link href="http://pollucite.github.io/blog/categories/backdoor-2014/atom.xml" rel="self"/>
+  <link href="http://pollucite.github.io/"/>
+  <updated>2014-03-26T22:19:53+08:00</updated>
+  <id>http://pollucite.github.io/</id>
+  <author>
+    <name><![CDATA[pollucite]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Backdoor CTF Web 10 and 30]]></title>
+    <link href="http://pollucite.github.io/blog/2014/03/23/blackdoor-web-10-and-30/"/>
+    <updated>2014-03-23T22:59:03+08:00</updated>
+    <id>http://pollucite.github.io/blog/2014/03/23/blackdoor-web-10-and-30</id>
+    <content type="html"><![CDATA[<p>暖身題★不過好久沒碰，想想還是稍微紀錄一下♥</p>
+
+<!-- more -->
+
+
+<h2>Web 10</h2>
+
+<p>上題目 :)</p>
+
+<p><img src="/images/2014-03-23-backdoor-web-10-and-30/web-10-question.PNG" alt="backdoor CTF web 10 question" /></p>
+
+<p>「仔細看看四周！」 source code 裡面沒藏東西，翻一下 Header ♪</p>
+
+<p>Wow! get it ♪</p>
+
+<p><img src="/images/2014-03-23-backdoor-web-10-and-30/web-10-answer.PNG" alt="backdoor CTF web 10 answer" /></p>
+
+<h2>Web 30</h2>
+
+<p>一個 submit 按鈕，按下去以後會說你沒有權限 :O</p>
+
+<p><img src="/images/2014-03-23-backdoor-web-10-and-30/web-30-question.PNG" alt="backdoor CTF web 30 question" />
+<img src="/images/2014-03-23-backdoor-web-10-and-30/web-30-question-1.PNG" alt="backdoor CTF web 30 question" /></p>
+
+<p>直接看 Header&hellip; Cookie: auth=false;</p>
+
+<p><img src="/images/2014-03-23-backdoor-web-10-and-30/web-30-answer-1.PNG" alt="backdoor CTF web 30 question" /></p>
+
+<p>把 auth 改成 true&hellip; get it!</p>
+
+<p><img src="/images/2014-03-23-backdoor-web-10-and-30/web-30-answer-2.PNG" alt="backdoor CTF web 30 question" /></p>
+]]></content>
+  </entry>
+  
+</feed>
